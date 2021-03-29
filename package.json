@@ -1,0 +1,28 @@
+{
+  "name": "first-graphql-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "babel-node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.13",
+    "@babel/node": "^7.13.13",
+    "@babel/preset-env": "^7.13.12"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.22.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "graphql-tag": "^2.12.3",
+    "graphql-tools": "^7.0.4",
+    "graphql-upload": "^11.0.0"
+  }
+}
