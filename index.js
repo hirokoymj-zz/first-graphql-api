@@ -11,6 +11,17 @@ import cors from "cors";
 
 const port = process.env.PORT || 4000;
 
+const generateRandomString = (length) => {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
+
 // Define APIs using GraphQL SDL
 const typeDefs = gql`
   scalar Upload
@@ -35,12 +46,15 @@ const resolvers = {
   },
   Mutation: {
     singleUpload: async (parent, { file }) => {
-      const { filename, mimetype, encoding, createReadStream } = await file;
+      const { filename, createReadStream } = await file;
+      const { ext } = path.parse(filename);
+      const randomName = generateRandomString(12) + ext;
+
       const stream = createReadStream();
-      const pathName = path.join(__dirname, `/public/images/${filename}`);
+      const pathName = path.join(__dirname, `/public/images/${randomName}`);
       await stream.pipe(fs.createWriteStream(pathName));
       return {
-        url: `http://localhost/4000/images/${filename}`,
+        url: `http://localhost:4000/images/${randomName}`,
       };
     },
   },
@@ -48,7 +62,7 @@ const resolvers = {
 
 // Configure express
 const app = express();
-app.use(graphqlUploadExpress()); // New!
+app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 })); // Maximum file size is up to 10MB
 app.use(express.static("public"));
 app.use(cors());
 
